@@ -6,19 +6,27 @@ const weatherApp = {
   insertData: function (el, inform) {
     this.selector.querySelector(el).innerText = inform;
   },
-  fetchWeather: function (city) {
+  fetchWeather: async function (city) {
     this.isLoading = true;
-    fetch(
+    let result = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.API_KEY}&lang=ua&units=metric`
-    )
-      .then((result) => result.json())
-      .then((data) => this.renderWeather(data))
-      .catch((err) => {
-        alert(err.message);
-      })
-      .finally(() => {
-        this.isLoading = false;
-      });
+    );
+    let data = await result.json();
+    this.renderWeather(data);
+    this.isLoading = false;
+    // fetch(
+    //   `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.API_KEY}&lang=ua&units=metric`
+    // )
+
+    // .then((result) => result.json())
+
+    // .then((data) => this.renderWeather(data))
+    // .catch((err) => {
+    //   alert(err.message);
+    // })
+    // .finally(() => {
+    //   this.isLoading = false;
+    // });
   },
   renderWeather: function (info) {
     this.insertData(".city_name", info.name);
